@@ -23,6 +23,15 @@ const errorLink = onError(({graphqlErrors,networkError}) =>{
   }
 })
 
+//connecting the Ello API 
+const link = from([
+  errorLink,
+  new HttpLink({uri:"https://fullstack-engineer-test-n4ouilzfna-uc.a.run.app/graphql"})
+]);
+
+
+
+
 
 
 
