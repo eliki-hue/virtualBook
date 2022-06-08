@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
 
@@ -52,35 +52,64 @@ function GetBooks() {
   //     </ul>
   //   </div>
   // )
+  const slideRef = useRef();
+
+  const back = () => {
+    slideRef.current.goBack();
+  }
+
+  const next = () => {
+    slideRef.current.goNext();
+  }
+
+  const goto = ({ target }) => {
+    slideRef.current.goTo(parseInt(target.value, 10));
+  }
+
 
   const style = {
     textAlign: 'center',
     background: 'teal',
-    padding: '200px 0px',
-    fontSize: '30px'
+    padding: '130px 0px',
+    fontSize: '30px',
+    
   };
+  const buttonStyle ={
+    padding:'20px',
+    fontSize: '30px',
+    content: 'center',
+
+  }
+  const contentStyle ={
+    margin:'20px'
+
+  }
 
   const properties = {
     duration: 3000,
     slidesToShow: 2,
     slidesToScroll: 2,
     autoplay: false,
+    // arrows: false,
     indicators: true,
   };
     return (
-      <div className="slide-hhhcontainer">
-        <Slide {...properties}>
+      <div className="slide-hhhcontainer" >
+        <Slide {...properties} ref={slideRef} style={style}>
          {books.map((book, index)=> (
             <div className="each-slide" key={index}>
               
-              <div>{book.content}</div>
-              {book.tokens.map(tokens => 
-          <li>{tokens.value}</li>
-        )} 
+              <div style={contentStyle}>{book.content}</div>
+              
               
             </div>
           ))} 
+          
         </Slide>
+        <div className="autoplay-buttons">
+        <button type="button" style={buttonStyle} onClick={back}>Back</button>
+        <button type="button" style={buttonStyle} onClick={next}>Next</button>
+        </div>
       </div>
     )
 
