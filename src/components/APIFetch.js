@@ -16,42 +16,31 @@ export const LOAD_BOOKS = gql`
     }
   }
 `;
+
+export var fetchedBooks;
+
 function GetBooks() {
   const [books, setBooks] = React.useState([]);
+  const [word, setWord] = React.useState([])
   // console.log(books);
   const { error, loading, data } = useQuery(LOAD_BOOKS);
   useEffect(() => {
     //checking whether data has been received
     if (data) {
-      console.log('whole')
-      console.log(data);
-      console.log("pages")
       console.log(data.book.pages);
-      console.log("index")
-      console.log(data.book.key);
+      console.log("this is")
+      fetchedBooks = data.book.pages
+      
+      console.log(fetchedBooks)
+      console.log("inner end")
       setBooks(data.book.pages);
+      setWord(data.book.pages.tokens)
+      
     }
+    else (console.log("loading ........"))
   }, [data]);
- 
-  // return books.map(book =>
-  //   <div>
-  //     <div className="slide-container">
-  //       <Slide>
-         
-              
-  //         <div>{book.content}</div>
-              
-          
-          
-  //       </Slide>
-  //       </div>
-  //     <ul>
-  //       {/* {book.tokens.map(tokens => 
-  //         <li>{tokens.value}</li>
-  //       )} */}
-  //     </ul>
-  //   </div>
-  // )
+  
+  
   const slideRef = useRef();
 
   const back = () => {
@@ -93,17 +82,55 @@ function GetBooks() {
     // arrows: false,
     indicators: true,
   };
+  // function Decomposer(){
+  // const sentence= books.content
+  // console.log(sentence)
+  // const tokens =books.tokens
+  // let newSentence =[]
+  // let counter = 0
+   
+  // tokens.forEach(item => {
+     
+  //     let value=(item.value)
+  //     console.log("this is value "+ value)
+  //     let start = item.position[0]
+  //     let end = item.position[1]+1
+  //     let word= sentence.slice(start,end)
+  //     console.log(word)
+
+  //     counter ++
+  //     console.log("count: " + counter, "value :"+value)
+  //     let wordList ={word:word, tokenvalue:value}
+  //     console.log(wordList)
+  //     newSentence.push(wordList)
+  //     console.log(newSentence)
+  
+  // })
+  // }
+  // Decomposer()
+
     return (
-      <div className="slide-hhhcontainer" >
+      <div className="slide-container" >
         <Slide {...properties} ref={slideRef} style={style}>
          {books.map((book, index)=> (
+
+          
             <div className="each-slide" key={index}>
               
               <div style={contentStyle}>{book.content}</div>
+             
               
+            
+          
+              {/* {book.tokens.map(tokens => 
+              <span> <li>{tokens.value}</li></span>
+          
+        )}  */}
               
             </div>
+          
           ))} 
+          
           
         </Slide>
         <div className="autoplay-buttons">
